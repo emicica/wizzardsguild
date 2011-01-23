@@ -1,0 +1,1271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/Parents.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>The Warwick School</title>
+<!-- InstanceEndEditable -->
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+	<script type="text/javascript" src="./js/jquery.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui.js"></script>
+	<script type="text/javascript" src="./js/jquery.alerts.js"></script>
+	<link href="./css/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+<style type="text/css">
+<!--
+.style1 {
+	color: #FFFF00;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+body {
+	background-color: #000000;
+	margin-top: 0px;
+}
+.style6 {color: #FFFF00; font-family: Arial, Helvetica, sans-serif; font-size: 14px;}
+.style7 {
+	color: #FFFF00;
+	font-style: italic;
+}
+a:link {
+	color: #FFFF00;
+}
+a:visited {
+	color: #FFFF99;
+}
+select {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFF00;
+	background-color: #000000;
+}
+.red {
+    background-color: red;
+}
+.green {
+    background-color: green;
+}  
+-->
+</style>
+<script language="JavaScript1.2">
+<!--
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+//-->
+
+function MM_jumpMenu(targ,selObj,restore){ //v3.0
+  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
+  if (restore) selObj.selectedIndex=0;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+
+	<script type="text/javascript">
+    
+        var selectedA = 0;
+        var selectedB = 0;
+        var selectedC = 0;
+        var selectedD = 0;
+        
+		$(document).ready(function(){
+		
+			//set everything to no on load
+			$('input[value="No"]').attr('checked', 'true');
+			//console.log("setting everything to No");
+			
+			//%%%%%disable first choice, if choosing diploma
+            
+			$('#hairandbeautydiploma').change(function(event){// if diploma is clicked
+				//console.log($(this).attr('checked'));
+				
+				if($(this).attr('checked') == true) {
+					//warn user
+					jAlert("Chosing a diploma will clear all First (1) choices. \n"+
+					"With a Diploma, chose only one reserve in each column!\n"+
+					"To reenable the First choice column, unselect the Diploma.");
+					
+					//console.log("Diploma checked");
+					$(".first").each(function(){
+						
+						if ($(this).attr('checked') == true) { // if current first is set
+							$('input[name="'+ this.name +'"][value="No"]').attr('checked','true'); // set corresponding no
+							$('input[name="'+ this.name +'"][value="No"]').change(); //raise change
+						}
+						//then disable all firsts
+						$(this).attr('disabled', 'true');
+					}); // end each
+				} else {
+					//console.log("Diploma unchecked");
+					// reenable first column
+					$(".first").each(function(){
+						//check is corresponding reserve is disabled too, then we need to leave it disabled
+						if ($('input[name="'+ this.name +'"][value="Reserve"]').attr('disabled') == true) {
+						 //noop
+						} else {
+							$(this).removeAttr('disabled');//we need to enable all firsts
+						}
+					}); // end each
+				}	//end if
+			
+            
+            checkComplete("A");
+            checkComplete("B");
+            checkComplete("C");
+            checkComplete("D");
+        
+            });
+			
+            
+            
+            $('.blocka').change(function(){
+                checkComplete("A");
+            });
+            
+            $('.blockb').change(function(){
+                checkComplete("B");
+            });
+            
+            $('.blockc').change(function(){
+                checkComplete("C");
+            });
+            
+            $('.blockd').change(function(){
+                checkComplete("D");
+            });
+            
+            
+            
+            
+			//if first is clicked in block A 
+			$(".blocka.first").change(function(event){
+                
+				var selected = this;
+				$('.first.blocka').each(function(){
+					if (this!=selected && //not the current selected
+					$('input[name="'+ this.name +'"][value="Reserve"]').attr('checked')!= true && //reserve is not checked
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) { // no is not already checked
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true');
+						$('input[name="'+ this.name +'"][value="No"]').change();
+					}
+				});
+			});
+			
+			//if first is clicked in block B
+			$(".blockb.first").change(function(event){
+				var selected = this;
+                
+				$('.first.blockb').each(function(){
+					if (this!=selected &&
+					$('input[name="'+ this.name +'"][value="Reserve"]').attr('checked')!= true &&
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) {
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true');
+						$('input[name="'+ this.name +'"][value="No"]').change();
+                        
+					}
+				});
+			});
+			
+			//if first is clicked in block C
+			$(".blockc.first").change(function(event){
+				var selected = this;
+				
+                $('.first.blockc').each(function(){
+					if (this!=selected &&
+					$('input[name="'+ this.name +'"][value="Reserve"]').attr('checked')!= true &&
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) {
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true');
+						$('input[name="'+ this.name +'"][value="No"]').change();
+                        
+					}
+				});
+			});
+			
+			//if first is clicked in block D
+			$(".blockd.first").change(function(event){
+				var selected = this;
+                
+                
+				$('.first.blockd').each(function(){
+					if (this!=selected &&
+					$('input[name="'+ this.name +'"][value="Reserve"]').attr('checked')!= true &&
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) {
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true');
+						$('input[name="'+ this.name +'"][value="No"]').change();
+                    }
+				});
+			});
+
+		
+			
+			//if reserve is clicked in block A, set all other to no, except First, current, and already no :)
+			$(".blocka.reserve").change(function(event){
+				var selected = this;
+                
+				$('.reserve.blocka').each(function(){
+					if (this!=selected && // not the current and
+					$('input[name="'+ this.name +'"][value="First"]').attr('checked')!= true && // corresponding first is not checked
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) { // not already no
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true'); // check no
+						//console.log("Raising change even on "+ this.name +" No checked.");
+						$('input[name="'+ this.name +'"][value="No"]').change(); //trigger change on no
+                        
+					}
+				});
+                
+			});
+			
+			//if reserve is clicked in block B, set all other to no, except First, current, and already no :)
+			$(".blockb.reserve").change(function(event){
+				var selected = this;
+                
+                
+				$('.reserve.blockb').each(function(){
+					if (this!=selected && // not the current and
+					$('input[name="'+ this.name +'"][value="First"]').attr('checked')!= true && // corresponding first is not checked
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) { // not already no
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true'); // check no
+						//console.log("Raising change even on "+ this.name +" No checked.");
+						$('input[name="'+ this.name +'"][value="No"]').change(); //trigger change on no
+                        
+					}
+				});
+			});
+			
+			//if reserve is clicked in block C, set all other to no, except First, current, and already no :)
+			$(".blockc.reserve").change(function(event){
+				var selected = this;
+                
+                
+				$('.reserve.blockc').each(function(){
+					if (this!=selected && // not the current and
+					$('input[name="'+ this.name +'"][value="First"]').attr('checked')!= true && // corresponding first is not checked
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) { // not already no
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true'); // check no
+						//console.log("Raising change even on "+ this.name +" No checked.");
+						$('input[name="'+ this.name +'"][value="No"]').change(); //trigger change on no
+                        
+					}
+				});
+			});
+			
+			//if reserve is clicked in block D, set all other to no, except First, current, and already no :)
+			$(".blockd.reserve").change(function(event){
+				var selected = this;
+	
+                
+				$('.reserve.blockd').each(function(){
+					if (this!=selected && // not the current and
+					$('input[name="'+ this.name +'"][value="First"]').attr('checked')!= true && // corresponding first is not checked
+					$('input[name="'+ this.name +'"][value="No"]').attr('checked')!= true) { // not already no
+						$('input[name="'+ this.name +'"][value="No"]').attr('checked','true'); // check no
+						//console.log("Raising change even on "+ this.name +" No checked.");
+						$('input[name="'+ this.name +'"][value="No"]').change(); //trigger change on no
+                        
+					}
+				});
+			});
+			
+			// %%%%%%%% handle duplicate sport
+			
+			//sport disable if reserve clicked
+			$('input[name^="sport"].reserve').change(function(event){
+				var selected = this;
+	
+				$('input[name^="sport"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("reserve clicked "+selected.name);
+						//console.log("disabling " + $('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			//sport disable if first clicked
+			$('input[name^="sport"].first').change(function(event){
+				var selected = this;
+	
+				$('input[name^="sport"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("first clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			$('input[name^="sport"].no').change(function(event){
+				var selected = this;
+	
+				$('input[name^="sport"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling "+$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+						
+					}
+				});
+			});
+			
+			
+			// %%%%%%%% handle duplicate art
+			
+			//art disable if reserve clicked
+			$('input[name^="art"].reserve').change(function(event){
+				var selected = this;
+	
+				$('input[name^="art"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("reserve clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			//art disable if first clicked
+			$('input[name^="art"].first').change(function(event){
+				var selected = this;
+	
+				$('input[name^="art"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("first clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			$('input[name^="art"].no').change(function(event){
+				var selected = this;
+	
+				$('input[name^="art"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling "+$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+					}
+				});
+			});
+			
+
+			
+			// %%%%%%%% handle duplicate french
+			
+			//fr disable if reserve clicked
+			$('input[name^="fr"].reserve').change(function(event){
+				var selected = this;
+	
+				$('input[name^="fr"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("reserve clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			//fr disable if first clicked
+			$('input[name^="fr"].first').change(function(event){
+				var selected = this;
+	
+				$('input[name^="fr"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("first clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			$('input[name^="fr"].no').change(function(event){
+				var selected = this;
+	
+				$('input[name^="fr"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+					}
+				});
+			});
+			
+			// %%%%%%%% handle duplicate history
+			
+			//hist disable if reserve clicked
+			$('input[name^="hist"].reserve').change(function(event){
+				var selected = this;
+	
+				$('input[name^="hist"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("reserve clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			//hist disable if first clicked
+			$('input[name^="hist"].first').change(function(event){
+				var selected = this;
+	
+				$('input[name^="hist"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("first clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			$('input[name^="hist"].no').change(function(event){
+				var selected = this;
+	
+				$('input[name^="hist"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+					}
+				});
+			});
+			
+
+
+			// %%%%%%%% handle duplicate geography
+			
+			//geo disable if reserve clicked
+			$('input[name^="geo"].reserve').change(function(event){
+				var selected = this;
+	
+				$('input[name^="geo"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("reserve clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			//hist disable if first clicked
+			$('input[name^="geo"].first').change(function(event){
+				var selected = this;
+	
+				$('input[name^="geo"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("first clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			$('input[name^="geo"].no').change(function(event){
+				var selected = this;
+	
+				$('input[name^="geo"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+					}
+				});
+			});
+			
+			//%%%%%%
+
+
+			// %%%%%%%% handle duplicate ict
+			
+			//ict disable if reserve clicked
+			$('input[name^="ict"].reserve').change(function(event){
+				var selected = this;
+	
+				$('input[name^="ict"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("reserve clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			//ict disable if first clicked
+			$('input[name^="ict"].first').change(function(event){
+				var selected = this;
+	
+				$('input[name^="ict"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("first clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			$('input[name^="ict"].no').change(function(event){
+				var selected = this;
+	
+				$('input[name^="ict"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+					}
+				});
+			});
+			
+			//%%%%%%
+            
+            // %%%%%%%% handle duplicate bst
+			
+			//bst disable if reserve clicked
+			$('input[name^="bst"].reserve').change(function(event){
+				var selected = this;
+	
+				$('input[name^="bst"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("reserve clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			//ict disable if first clicked
+			$('input[name^="bst"].first').change(function(event){
+				var selected = this;
+	
+				$('input[name^="bst"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("first clicked "+selected.name);
+						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').attr('disabled','true');
+					}
+				});
+			});
+			
+			$('input[name^="bst"].no').change(function(event){
+				var selected = this;
+	
+				$('input[name^="bst"]').each(function(){
+					if (this!=selected && // nem az aktualis
+					this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+					}
+				});
+			});
+			
+			//%%%%%%
+			
+		});
+		
+		
+        function getBlock(input) {
+            
+            if ($(input).hasClass('blocka')) {return "A";}
+            if ($(input).hasClass('blockb')) {return "B";}
+            if ($(input).hasClass('blockc')) {return "C";}
+            if ($(input).hasClass('blockd')) {return "D";}
+            
+        }
+        
+                
+        function checkComplete(block){
+            if (block == "A") {
+                selectedA = 0;
+            
+                $('.blocka.first').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedA++;
+                    }
+                });
+                $('.blocka.reserve').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedA++;
+                    }
+                });
+                
+                if($('#hairandbeautydiploma').attr('checked')) {
+                    selectedA++;
+                }
+            
+                //console.log("Checksum A is "+ selectedA);
+                
+                if (selectedA == 2) { //complete
+                    if ($('#blockah').hasClass('red')) {
+                        $('#blockah').removeClass('red');
+                    }
+                    
+                    if (!$('#blockah').hasClass('green')) {
+                        $('#blockah').addClass('green');
+                    }
+                } else { // not complete
+                    if (!$('#blockah').hasClass('red')) {
+                        $('#blockah').addClass('red');
+                    }
+                    
+                    if ($('#blockah').hasClass('green')) {
+                        $('#blockah').removeClass('green');
+                    }
+
+                }
+                    
+            }
+            if (block == "B") {
+                selectedB = 0;
+            
+                $('.blockb.first').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedB++;
+                    }
+                });
+                $('.blockb.reserve').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedB++;
+                    }
+                });
+                
+                if($('#hairandbeautydiploma').attr('checked')) {
+                    selectedB++;
+                }
+            
+                //console.log("Checksum B is "+ selectedB);
+                
+                if (selectedB == 2) { //complete
+                    if ($('#blockbh').hasClass('red')) {
+                        $('#blockbh').removeClass('red');
+                    }
+                    
+                    if (!$('#blockbh').hasClass('green')) {
+                        $('#blockbh').addClass('green');
+                    }
+                } else { // not complete
+                    if (!$('#blockbh').hasClass('red')) {
+                        $('#blockbh').addClass('red');
+                    }
+                    
+                    if ($('#blockbh').hasClass('green')) {
+                        $('#blockbh').removeClass('green');
+                    }
+
+                }
+                    
+            }
+            if (block == "C") {
+                selectedC = 0;
+            
+                $('.blockc.first').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedC++;
+                    }
+                });
+                $('.blockc.reserve').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedC++;
+                    }
+                });
+                
+                if($('#hairandbeautydiploma').attr('checked')) {
+                    selectedC++;
+                }
+            
+                //console.log("Checksum C is "+ selectedC);
+                
+                if (selectedC == 2) { //complete
+                    if ($('#blockch').hasClass('red')) {
+                        $('#blockch').removeClass('red');
+                    }
+                    
+                    if (!$('#blockch').hasClass('green')) {
+                        $('#blockch').addClass('green');
+                    }
+                } else { // not complete
+                    if (!$('#blockch').hasClass('red')) {
+                        $('#blockch').addClass('red');
+                    }
+                    
+                    if ($('#blockch').hasClass('green')) {
+                        $('#blockch').removeClass('green');
+                    }
+
+                }
+                    
+            }
+            if (block == "D") {
+                selectedD = 0;
+            
+                $('.blockd.first').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedD++;
+                    }
+                });
+                $('.blockd.reserve').each(function(){
+                    if ($(this).attr('checked')) {
+                    selectedD++;
+                    }
+                });
+                
+                if($('#hairandbeautydiploma').attr('checked')) {
+                    selectedD++;
+                }
+            
+                //console.log("Checksum D is "+ selectedD);
+                
+                if (selectedD == 2) { //complete
+                    if ($('#blockdh').hasClass('red')) {
+                        $('#blockdh').removeClass('red');
+                    }
+                    
+                    if (!$('#blockdh').hasClass('green')) {
+                        $('#blockdh').addClass('green');
+                    }
+                } else { // not complete
+                    if (!$('#blockdh').hasClass('red')) {
+                        $('#blockdh').addClass('red');
+                    }
+                    
+                    if ($('#blockdh').hasClass('green')) {
+                        $('#blockdh').removeClass('green');
+                    }
+
+                }
+                    
+            }
+        }
+        
+	</script>
+</head>
+
+<body onload="MM_preloadImages('http://www.warwick.surrey.sch.uk/Images/Visitor%20Book%20over.png','http://www.warwick.surrey.sch.uk/Images/Teacher%20over.png','http://www.warwick.surrey.sch.uk/Images/Parents%20over.png','http://www.warwick.surrey.sch.uk/Images/Governors%20over.png','http://www.warwick.surrey.sch.uk/Images/Governors.png','http://www.warwick.surrey.sch.uk/Images/home%20over.png')">
+<table width="997" border="0" align="center" cellpadding="5" cellspacing="0">
+
+  <!--DWLayoutTable-->
+  <tr>
+    <td height="50" colspan="3" align="center" valign="middle" bgcolor="#000000">      <h1 align="center" class="style1">The Warwick School</h1></td>
+  </tr>
+  <tr>
+    <td height="149" colspan="3" align="center" valign="middle" background="http://www.warwick.surrey.sch.uk/Images/Ecology1.png">      <table width="970" height="125" border="0">
+        <tr>
+
+          <td width="262" height="121"><div align="center"><a href="http://www.warwick.surrey.sch.uk/Visitor/visitors.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('visitor','','http://www.warwick.surrey.sch.uk/Images/Visitor%20Book%20over.png',1)"><img src="http://www.warwick.surrey.sch.uk/Images/Visitor%20Book.png" name="visitor" width="117" height="116" border="0" id="visitor" /></a><a href="http://www.warwick.surrey.sch.uk/Visitor/visitors.html"></a></div></td>
+          <td width="214"><div align="center"><a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('staff','','http://www.warwick.surrey.sch.uk/Images/Teacher%20over.png',1)"></a><a href="http://www.warwick.surrey.sch.uk/calendar.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('staff','','http://www.warwick.surrey.sch.uk/Images/Teacher%20over.png',1)"><img src="http://www.warwick.surrey.sch.uk/Images/Teacher.png" name="staff" width="117" height="108" border="0" id="staff" /></a></div></td>
+          <td width="214"><div align="center"><a href="index.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('parents','','http://www.warwick.surrey.sch.uk/Images/Parents%20over.png',1)"><img src="http://www.warwick.surrey.sch.uk/Images/Parents.png" name="parents" width="103" height="116" border="0" id="parents" /></a></div></td>
+          <td width="262"><div align="center"><a href="http://www.warwick.surrey.sch.uk/Visitor/Governing%20Body.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('governors','','http://www.warwick.surrey.sch.uk/Images/Governors%20over.png',1)"><img src="http://www.warwick.surrey.sch.uk/Images/Governors.png" name="governors" width="103" height="116" border="0" id="governors" /></a><a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('governors','','http://www.warwick.surrey.sch.uk/Images/Governors.png',1)"></a><a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('governors','','http://www.warwick.surrey.sch.uk/Images/Governors%20over.png',1)"></a></div></td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr bgcolor="#000000">
+    <td height="29" colspan="3" align="center" valign="middle"><div align="center" class="style7">
+
+      
+        <script language="JavaScript1.2">
+
+/*
+Cross browser Marquee script- © Dynamic Drive (www.dynamicdrive.com)
+For full source code, 100's more DHTML scripts, and Terms Of Use, visit http://www.dynamicdrive.com
+Credit MUST stay intact
+*/
+
+//Specify the marquee's width (in pixels)
+var marqueewidth="970px"
+//Specify the marquee's height
+var marqueeheight="25px"
+//Specify the marquee's marquee speed (larger is faster 1-10)
+var marqueespeed=2.5
+//configure background color:
+var marqueebgcolor="#000000"
+//Pause marquee onMousever (0=no. 1=yes)?
+var pauseit=1
+
+//Specify the marquee's content (don't delete <nobr> tag)
+//Keep all content on ONE line, and backslash any single quotations (ie: that\'s great):
+
+var marqueecontent='<nobr><font face="Arial">GCSE Results Of 74% A*-C <a href="http://www.warwick.surrey.sch.uk/News/GCSE_Results.html" target="_blank">click here</a>~~~~~~ What The Community Say About The Warwick School <a href="http://www.warwick.surrey.sch.uk/News/What_people_say_about_The_Warwick.html" target="_blank">click here</a></font></nobr>'
+
+
+////NO NEED TO EDIT BELOW THIS LINE////////////
+marqueespeed=(document.all)? marqueespeed : Math.max(1, marqueespeed-1) //slow speed down by 1 for NS
+var copyspeed=marqueespeed
+var pausespeed=(pauseit==0)? copyspeed: 0
+var iedom=document.all||document.getElementById
+if (iedom)
+document.write('<span id="temp" style="visibility:hidden;position:absolute;top:-100px;left:-9000px">'+marqueecontent+'</span>')
+var actualwidth=''
+var cross_marquee, ns_marquee
+
+function populate(){
+if (iedom){
+cross_marquee=document.getElementById? document.getElementById("iemarquee") : document.all.iemarquee
+cross_marquee.style.left=parseInt(marqueewidth)+8+"px"
+cross_marquee.innerHTML=marqueecontent
+actualwidth=document.all? temp.offsetWidth : document.getElementById("temp").offsetWidth
+}
+else if (document.layers){
+ns_marquee=document.ns_marquee.document.ns_marquee2
+ns_marquee.left=parseInt(marqueewidth)+8
+ns_marquee.document.write(marqueecontent)
+ns_marquee.document.close()
+actualwidth=ns_marquee.document.width
+}
+lefttime=setInterval("scrollmarquee()",20)
+}
+window.onload=populate
+
+function scrollmarquee(){
+if (iedom){
+if (parseInt(cross_marquee.style.left)>(actualwidth*(-12)+1024))
+cross_marquee.style.left=parseInt(cross_marquee.style.left)-copyspeed+"px"
+else
+cross_marquee.style.left=parseInt(marqueewidth)+8+"px"
+
+}
+else if (document.layers){
+if (ns_marquee.left>(actualwidth*(-12)+1024))
+ns_marquee.left-=copyspeed
+else
+ns_marquee.left=parseInt(marqueewidth)+8
+}
+}
+
+if (iedom||document.layers){
+with (document){
+document.write('<table border="0" cellspacing="0" cellpadding="0"><td>')
+if (iedom){
+write('<div style="position:relative;width:'+marqueewidth+';height:'+marqueeheight+';overflow:hidden">')
+write('<div style="position:absolute;width:'+marqueewidth+';height:'+marqueeheight+';background-color:'+marqueebgcolor+'" onMouseover="copyspeed=pausespeed" onMouseout="copyspeed=marqueespeed">')
+write('<div id="iemarquee" style="position:absolute;left:0px;top:0px"></div>')
+write('</div></div>')
+}
+else if (document.layers){
+write('<ilayer width='+marqueewidth+' height='+marqueeheight+' name="ns_marquee" bgColor='+marqueebgcolor+'>')
+write('<layer name="ns_marquee2" left=0 top=0 onMouseover="copyspeed=pausespeed" onMouseout="copyspeed=marqueespeed"></layer>')
+write('</ilayer>')
+}
+document.write('</td></table>')
+}
+}
+          </script>
+    </div></td>
+  </tr>
+  <tr>
+    <td width="260" height="29" valign="top" bgcolor="#006600" class="style1"><select name="Quick Links" onchange="MM_jumpMenu('parent',this,0)">
+      <option>Quick Links</option>
+      <option value="http://vle.warwick.surrey.sch.uk">Virtual Learning Environment</option>
+
+      <option value="https://webmail.warwick.surrey.sch.uk/exchange">E-Mail</option>
+      <option value="https://hslg8.capita-cso.co.uk/CookieAuth.dll?GetLogon?curl=Z2FWSR&amp;reason=0&amp;formdir=3">SIMS Learning Gateway</option>
+      <option value="https://www.parentpay.com/PR1/Info/PP_Login.aspx">Parentpay</option>
+      <option value="http://www.warwick.surrey.sch.uk/Vacancies/Vacancies.html">Vacancies</option>
+      <option value="http://www.warwick.surrey.sch.uk/contact us.html">Contact Us</option>
+      <option value="http://www.warwick.surrey.sch.uk/Staff List.html">Staff List</option>
+
+      <option value="http://www.warwick.surrey.sch.uk/calendar.html">Calendar</option>
+      <option value="http://www.warwick.surrey.sch.uk/Feedback Newsletter.html">Feedback Newsletter</option>
+      <option value="http://www.warwick.surrey.sch.uk/Downloads/Privacy_Notice.pdf">Privacy Notice (PDF)</option>
+      <option value="http://www.warwick.surrey.sch.uk/Ranger Outpost.html">Ranger Outpost</option>
+      <option value="http://www.warwick.surrey.sch.uk/School Policies.html">School Policies</option>
+      <option value="http://www.warwick.surrey.sch.uk/Ofsted Report.html">Ofsted Report</option>
+
+    </select></td>
+    <td width="337" valign="top" bgcolor="#006600" class="style1"><!-- InstanceBeginEditable name="Page Title" -->
+      <h2 align="center"><em>Key Stage 4 <br/>Options Form 2011</em></h2>
+    <!-- InstanceEndEditable --></td>
+    <td width="388" valign="top" bgcolor="#006600" class="style1"><div align="right">
+      <select name="select" onchange="MM_jumpMenu('parent',this,0)">
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Parents.html">Parents</option>
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Careers Information.html">Careers Information</option>
+
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Monitoring Progress.html">Monitoring Progress</option>
+        <option value="http://www.warwick.surrey.sch.uk/Parents/uniform.html">Uniform</option>
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Responding To Parents Concerns.html">Responding To Parents' Concerns</option>
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Further Education.html">Further Education</option>
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Warwick_School_Association.html">Warwick School Association</option>
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Downloads/Mock_Exam_Timetable.pdf">Yr11 Mock Exam Timetable 6th&ndash;17th Dec (PDF)</option>
+
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Events.html">Events</option>
+        <option value="http://www.warwick.surrey.sch.uk/Parents/Revision.html">Revision</option>
+        </select>
+    </div></td>
+  </tr>
+  <tr>
+    <td height="315" colspan="3" align="center" valign="top" bgcolor="#006600"><!-- InstanceBeginEditable name="Main" -->
+		<form class="style6">
+			<table border="1">
+				<tr>
+					<th>Qualification</th>
+					<th id="blockah" class="red">Block A</th>
+					<th id="blockbh" class="red">Block B</th>
+					<th id="blockch" class="red">Block C</th>
+					<th id="blockdh" class="red">Block D Technology</th>
+				</tr>
+				<tr>
+					<th id="gcse">GCSE</th>
+					<td align="right" valign="top">
+						<table>
+						<tr>
+							<th></th><th>1</th><th>R</th><th>no</th>
+						</tr>
+							<tr id="geo1">
+								<td>Geography</td>
+								<td><input type="radio" name="geo1" class="blocka first" value="First"></td>
+								<td><input type="radio" name="geo1" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="geo1" class="blocka no" value="No"></td>
+							</tr>
+							<tr id="hist1">
+								<td>History</td>
+								<td><input type="radio" name="hist1" class="blocka first" value="First"></td>
+								<td><input type="radio" name="hist1" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="hist1" class="blocka no" value="No"></td>
+							</tr>
+							<tr id="tsc1">
+								<td>Triple Science</td>
+								<td><input type="radio" name="tsc1" class="blocka first" value="First"></td>
+								<td><input type="radio" name="tsc1" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="tsc1" class="blocka no" value="No"></td>
+							</tr>
+							<tr id="bst1">
+								<td>Business Studies</td>
+								<td><input type="radio" name="bst1" class="blocka first" value="First"></td>
+								<td><input type="radio" name="bst1" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="bst1" class="blocka no" value="No"></td>
+							</tr>
+						</table>
+	
+					</td>
+					<td align="right"  valign="top">
+						<table>
+							<tr>
+								<th></th><th>1</th><th>R</th><th>no</th>
+							</tr>
+							<tr id="geo2">
+								<td>Geography</td>
+								<td><input type="radio" name="geo2" class="blockb first" value="First"></td>
+								<td><input type="radio" name="geo2" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="geo2" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="fr1">
+								<td>French</td>
+								<td><input type="radio" name="fr1" class="blockb first" value="First"></td>
+								<td><input type="radio" name="fr1" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="fr1" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="law">
+								<td>Law</td>
+								<td><input type="radio" name="law" class="blockb first" value="First"></td>
+								<td><input type="radio" name="law" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="law" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="bst2">
+								<td>Business Studies</td>
+								<td><input type="radio" name="bst2" class="blockb first" value="First"></td>
+								<td><input type="radio" name="bst2" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="bst2" class="blockb no" value="No"></td>
+							</tr>
+						</table>
+						
+						
+					</td>
+					<td align="right" valign="top">
+						<table>
+							<tr>
+								<th></th><th>1</th><th>R</th><th>no</th>
+							</tr>
+							<tr id="mst1">
+								<td>Media Studies</td>
+								<td><input type="radio" name="mst" class="blockc first" value="First"></td>
+								<td><input type="radio" name="mst" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="mst" class="blockc no" value="No"></td>
+							</tr>
+							<tr id="rst">
+								<td>Religious Studies</td>
+								<td><input type="radio" name="rst" class="blockc first" value="First"></td>
+								<td><input type="radio" name="rst" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="rst" class="blockc no" value="No"></td>
+							</tr>
+							<tr id="hist2">
+								<td>History</td>
+								<td><input type="radio" name="hist2" class="blockc first" value="First"></td>
+								<td><input type="radio" name="hist2" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="hist2" class="blockc no" value="No"></td>
+							</tr>
+							<tr id="fr2">
+								<td>French</td>
+								<td><input type="radio" name="fr2" class="blockc first" value="First"></td>
+								<td><input type="radio" name="fr2" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="fr2" class="blockc no" value="No"></td>
+							</tr>
+							<tr id="de">
+								<td>German</td>
+								<td><input type="radio" name="de" class="blockc first" value="First"></td>
+								<td><input type="radio" name="de" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="de" class="blockc no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+					<td align="right" valign="top">
+						<table>
+							<tr>
+								<th></th><th>1</th><th>R</th><th>no</th>
+							</tr>
+							<tr id="ft">
+								<td>Food Technology</td>
+								<td><input type="radio" name="ft" class="blockd first" value="First"></td>
+								<td><input type="radio" name="ft" class="blockd reserve" value="Reserve"></td>
+								<td><input type="radio" name="ft" class="blockd no" value="No"></td>
+							</tr>
+							<tr id="gp">
+								<td>Graphic Products</td>
+								<td><input type="radio" name="gp" class="blockd first" value="First"></td>
+								<td><input type="radio" name="gp" class="blockd reserve" value="Reserve"></td>
+								<td><input type="radio" name="gp" class="blockd no" value="No"></td>
+							</tr>
+							<tr id="pd">
+								<td>Product Design</td>
+								<td><input type="radio" name="pd" class="blockd first" value="First"></td>
+								<td><input type="radio" name="pd" class="blockd reserve" value="Reserve"></td>
+								<td><input type="radio" name="pd" class="blockd no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<th id="btec">BTEC</th>
+					<td align="right" valign="top">
+						<table>
+							<tr id="art1">
+								<td>Art</td>
+								<td><input type="radio" name="art1" class="blocka first" value="First"></td>
+								<td><input type="radio" name="art1" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="art1" class="blocka no" value="No"></td>
+							</tr>
+							<tr id="sport1">
+								<td>Sport</td>
+								<td><input type="radio" name="sport1" class="blocka first" value="First"></td>
+								<td><input type="radio" name="sport1" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="sport1" class="blocka no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+					<td align="right" valign="top">
+						<table>
+							<tr id="mus1">
+									<td>Music</td>
+									<td><input type="radio" name="mus1" class="blockb first" value="First"></td>
+									<td><input type="radio" name="mus1" class="blockb reserve" value="Reserve"></td>
+									<td><input type="radio" name="mus1" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="art2">
+									<td>Art</td>
+									<td><input type="radio" name="art2" class="blockb first" value="First"></td>
+									<td><input type="radio" name="art2" class="blockb reserve" value="Reserve"></td>
+									<td><input type="radio" name="art2" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="hsc">
+									<td>Health and Social Care *</td>
+									<td><input type="radio" name="hsc" class="blockb first" value="First"></td>
+									<td><input type="radio" name="hsc" class="blockb reserve" value="Reserve"></td>
+									<td><input type="radio" name="hsc" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="ps">
+									<td>Public Services *</td>
+									<td><input type="radio" name="ps" class="blockb first" value="First"></td>
+									<td><input type="radio" name="ps" class="blockb reserve" value="Reserve"></td>
+									<td><input type="radio" name="ps" class="blockb no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+					<td align="right" valign="top">
+						<table>
+							<tr id="sport2">
+								<td>Sport</td>
+								<td><input type="radio" name="sport2" class="blockc first" value="First"></td>
+								<td><input type="radio" name="sport2" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="sport2" class="blockc no" value="No"></td>
+							</tr>
+							<tr id="act">
+								<td>Acting</td>
+								<td><input type="radio" name="act" class="blockc first" value="First"></td>
+								<td><input type="radio" name="act" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="act" class="blockc no" value="No"></td>
+							</tr>
+							<tr id="dance">
+								<td>Dance</td>
+								<td><input type="radio" name="dance" class="blockc first" value="First"></td>
+								<td><input type="radio" name="dance" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="dance" class="blockc no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<th id="ocr">OCR</th>
+					<td align="right">
+						<table>
+							<tr id="ict1">
+								<td>ICT Double Award</td>
+								<td><input type="radio" name="ict1" class="blocka first" value="First"></td>
+								<td><input type="radio" name="ict1" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="ict1" class="blocka no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+					<td align="right">
+						<table>
+							<tr id="ict2">
+								<td>ICT Double Award</td>
+								<td><input type="radio" name="ict2" class="blockb first" value="First"></td>
+								<td><input type="radio" name="ict2" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="ict2" class="blockb no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<th>Vocational</th>
+					<td>&nbsp;</td>
+					<td  valign="top" align="right">
+						<table>
+							<tr id="hd">
+								<td>Hairdessing</td>
+								<td><input type="radio" name="hd" class="blockb first" value="First"></td>
+								<td><input type="radio" name="hd" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="hd" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="eng">
+								<td>Engineering</td>
+								<td><input type="radio" name="eng" class="blockb first" value="First"></td>
+								<td><input type="radio" name="eng" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="eng" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="build">
+								<td>Building</td>
+								<td><input type="radio" name="build" class="blockb first" value="First"></td>
+								<td><input type="radio" name="build" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="build" class="blockb no" value="No"></td>
+							</tr>
+							<tr id="mv">
+								<td>Motor Vehicle</td>
+								<td><input type="radio" name="mv" class="blockb first" value="First"></td>
+								<td><input type="radio" name="mv" class="blockb reserve" value="Reserve"></td>
+								<td><input type="radio" name="mv" class="blockb no" value="No"></td>
+							</tr>
+						</table>
+					<td valign="top">
+						<table>
+							<tr id="ptxl">
+								<td>Princes Trust XL Club</td>
+								<td><input type="radio" name="ptxl" class="blockc first" value="First"></td>
+								<td><input type="radio" name="ptxl" class="blockc reserve" value="Reserve"></td>
+								<td><input type="radio" name="ptxl" class="blockc no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+					<td  valign="top">
+						<table>
+							<tr id="cat">
+								<td>Catering GCSE</td>
+								<td><input type="radio" name="cat" class="blockd first" value="First"></td>
+								<td><input type="radio" name="cat" class="blockd reserve" value="Reserve"></td>
+								<td><input type="radio" name="cat" class="blockd no" value="No"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<th>Entry Level</th>
+					<td align="right">
+						<table>
+							<tr id="hp">
+								<td>Humanity Pathways</td>
+								<td><input type="radio" name="hp" class="blocka first" value="First"></td>
+								<td><input type="radio" name="hp" class="blocka reserve" value="Reserve"></td>
+								<td><input type="radio" name="hp" class="blocka no" value="No"></td>
+							</tr>
+							<tr>
+								<th></th><th>1</th><th>R</th><th>no</th>
+							</tr>
+						</table>
+					</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<th>Diploma</th>
+					<td colspan="4" align="center">Hair and Beauty Diploma <input type="checkbox" name="hbd" id="hairandbeautydiploma"></td>
+				</tr>
+			</table>
+		</form>
+
+      
+
+    <!-- InstanceEndEditable --></td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="bottom" bgcolor="#006600" class="style6"><p><strong> Noke Drive, Redhill, Surrey, RH1 4AD</strong><strong><br />
+    T: 01737 764356 E: <a href="mailto:mail@warwick.surrey.sch.uk">mail@warwick.surrey.sch.uk</a></strong></p>    </td>
+    <td valign="bottom" bgcolor="#006600" class="style6"><div align="right"><a href="http://www.warwick.surrey.sch.uk/index.html" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('home','','http://www.warwick.surrey.sch.uk/Images/home%20over.png',1)"><img src="http://www.warwick.surrey.sch.uk/Images/home.png" name="home" width="39" height="38" border="0" id="home" /></a><a href="http://www.warwick.surrey.sch.uk/index.html"></a></div></td>
+
+  </tr>
+</table>
+
+
+  <div align="justify">
+      <script language="JavaScript1.2">
+if (iens6){
+document.write("<div id='viewer' style='background-color:#cccccc;marginleft:0;visibility:hidden;position:absolute;width:0;height:0;z-index:1;overflow:hidden'></div>")
+}
+if (ns4){
+	hideobj = eval("document.nsviewer")
+	hideobj.visibility="hidden"
+}
+    </script>
+  </div>
+</body>
+<!-- InstanceEnd --></html>
