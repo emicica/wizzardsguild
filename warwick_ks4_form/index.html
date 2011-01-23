@@ -154,6 +154,10 @@ function MM_swapImage() { //v3.0
                 checkComplete("D");
             });
             
+            
+            
+            //check btecs, a max of 2 is allowed
+            
             $('.btec').change(function(){
                 var btecs =0;
                                 
@@ -323,323 +327,216 @@ function MM_swapImage() { //v3.0
 				});
 			});
 			
-			// %%%%%%%% handle duplicate sport
+			
+            
+            
+            
+            // %%%%%%%% handle duplicate sport
 			
 			//sport disable if reserve clicked
 			$('input[name^="sport"].reserve').change(function(event){
-				var selected = this;
-	
-				$('input[name^="sport"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("reserve clicked "+selected.name);
-						//console.log("disabling " + $('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+				
+                disableRelative(this, "sport");
+                
 			});
 			
 			//sport disable if first clicked
 			$('input[name^="sport"].first').change(function(event){
-				var selected = this;
-	
-				$('input[name^="sport"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("first clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+            
+				disableRelative(this, "sport");
+			
+            });
+			
+			//enable other sport, if this sport set to no
+            $('input[name^="sport"].no').change(function(event){
+				
+                enableRelative(this, "sport");
+                
 			});
-			
-			$('input[name^="sport"].no').change(function(event){
-				var selected = this;
-	
-				$('input[name^="sport"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("no clicked "+selected.name);
-						//console.log("enabling "+$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').removeAttr('disabled');
-						
-					}
-				});
-			});
-			
-			
-			// %%%%%%%% handle duplicate art
+            
+            
+            // %%%%%%%% handle duplicate art
 			
 			//art disable if reserve clicked
 			$('input[name^="art"].reserve').change(function(event){
-				var selected = this;
-	
-				$('input[name^="art"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("reserve clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+				
+                disableRelative(this, "art");
+                
 			});
 			
 			//art disable if first clicked
 			$('input[name^="art"].first').change(function(event){
-				var selected = this;
-	
-				$('input[name^="art"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("first clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+            
+				disableRelative(this, "art");
+			
+            });
+			
+			//enable other art, if this art set to no
+            $('input[name^="art"].no').change(function(event){
+				
+                enableRelative(this, "art");
+                
 			});
 			
-			$('input[name^="art"].no').change(function(event){
-				var selected = this;
-	
-				$('input[name^="art"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("no clicked "+selected.name);
-						//console.log("enabling "+$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').removeAttr('disabled');
-					}
-				});
-			});
 			
-
-			
-			// %%%%%%%% handle duplicate french
+            // %%%%%%%% handle duplicate fr
 			
 			//fr disable if reserve clicked
 			$('input[name^="fr"].reserve').change(function(event){
-				var selected = this;
-	
-				$('input[name^="fr"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("reserve clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+				
+                disableRelative(this, "fr");
+                
 			});
 			
 			//fr disable if first clicked
 			$('input[name^="fr"].first').change(function(event){
-				var selected = this;
-	
-				$('input[name^="fr"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("first clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
-			});
+            
+				disableRelative(this, "fr");
 			
-			$('input[name^="fr"].no').change(function(event){
-				var selected = this;
-	
-				$('input[name^="fr"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("no clicked "+selected.name);
-						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').removeAttr('disabled');
-					}
-				});
-			});
+            });
 			
-			// %%%%%%%% handle duplicate history
+			//enable other fr, if this fr set to no
+            $('input[name^="fr"].no').change(function(event){
+				
+                enableRelative(this, "fr");
+                
+			});
+
+
+            // %%%%%%%% handle duplicate hist
 			
 			//hist disable if reserve clicked
 			$('input[name^="hist"].reserve').change(function(event){
-				var selected = this;
-	
-				$('input[name^="hist"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("reserve clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+				
+                disableRelative(this, "hist");
+                
 			});
 			
 			//hist disable if first clicked
 			$('input[name^="hist"].first').change(function(event){
-				var selected = this;
-	
-				$('input[name^="hist"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("first clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
-			});
+            
+				disableRelative(this, "hist");
 			
-			$('input[name^="hist"].no').change(function(event){
-				var selected = this;
-	
-				$('input[name^="hist"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("no clicked "+selected.name);
-						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').removeAttr('disabled');
-					}
-				});
-			});
+            });
 			
+			//enable other hist, if this hist set to no
+            $('input[name^="hist"].no').change(function(event){
+				
+                enableRelative(this, "hist");
+                
+			});
+
+			
+					
 
 
 			// %%%%%%%% handle duplicate geography
 			
 			//geo disable if reserve clicked
 			$('input[name^="geo"].reserve').change(function(event){
-				var selected = this;
-	
-				$('input[name^="geo"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("reserve clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+				
+                disableRelative(this, "geo");
+                
 			});
 			
-			//hist disable if first clicked
+			//geo disable if first clicked
 			$('input[name^="geo"].first').change(function(event){
-				var selected = this;
-	
-				$('input[name^="geo"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("first clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
-			});
+            
+				disableRelative(this, "geo");
 			
-			$('input[name^="geo"].no').change(function(event){
-				var selected = this;
-	
-				$('input[name^="geo"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("no clicked "+selected.name);
-						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').removeAttr('disabled');
-					}
-				});
+            });
+			
+			//enable other geo, if this geo set to no
+            $('input[name^="geo"].no').change(function(event){
+				
+                enableRelative(this, "geo");
+                
 			});
+
 			
 			//%%%%%%
 
 
 			// %%%%%%%% handle duplicate ict
-			
 			//ict disable if reserve clicked
 			$('input[name^="ict"].reserve').change(function(event){
-				var selected = this;
-	
-				$('input[name^="ict"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("reserve clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+				
+                disableRelative(this, "ict");
+                
 			});
 			
 			//ict disable if first clicked
 			$('input[name^="ict"].first').change(function(event){
-				var selected = this;
-	
-				$('input[name^="ict"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("first clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
-			});
+            
+				disableRelative(this, "ict");
 			
-			$('input[name^="ict"].no').change(function(event){
-				var selected = this;
-	
-				$('input[name^="ict"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("no clicked "+selected.name);
-						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').removeAttr('disabled');
-					}
-				});
-			});
+            });
 			
+			//enable other ict, if this ict set to no
+            $('input[name^="ict"].no').change(function(event){
+				
+                enableRelative(this, "ict");
+                
+			});
+						
 			//%%%%%%
             
             // %%%%%%%% handle duplicate bst
-			
 			//bst disable if reserve clicked
 			$('input[name^="bst"].reserve').change(function(event){
-				var selected = this;
-	
-				$('input[name^="bst"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("reserve clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
+				
+                disableRelative(this, "bst");
+                
 			});
 			
-			//ict disable if first clicked
+			//bst disable if first clicked
 			$('input[name^="bst"].first').change(function(event){
-				var selected = this;
-	
-				$('input[name^="bst"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("first clicked "+selected.name);
-						//console.log("disabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').attr('disabled','true');
-					}
-				});
-			});
+            
+				disableRelative(this, "bst");
 			
-			$('input[name^="bst"].no').change(function(event){
-				var selected = this;
-	
-				$('input[name^="bst"]').each(function(){
-					if (this!=selected && // nem az aktualis
-					this.name != selected.name) { 
-						//console.log("no clicked "+selected.name);
-						//console.log("enabling " +$('input[name="'+ this.name +'"]').attr('name'));
-						$('input[name="'+ this.name +'"]').removeAttr('disabled');
-					}
-				});
-			});
+            });
 			
+			//enable other bst, if this bst set to no
+            $('input[name^="bst"].no').change(function(event){
+				
+                enableRelative(this, "bst");
+                
+			});
+						
+
+						
 			//%%%%%%
 			
 		});
 		
-		
+		function enableRelative(clickedObj, nameStub) {
+            var selected = clickedObj;
+	
+				$('input[name^="'+nameStub+'"]').each(function(){
+					if (this!=selected && this.name != selected.name) { 
+						//console.log("no clicked "+selected.name);
+						//console.log("enabling "+$('input[name="'+ this.name +'"]').attr('name'));
+						$('input[name="'+ this.name +'"]').removeAttr('disabled');
+					}
+				});
+        }
+        
+        function disableRelative(clickedObj, nameStub) {
+            var selected = clickedObj;
+            
+            //select all that match stub (sport1 and sport2)
+            $('input[name^="'+nameStub+'"]').each(function(){
+                if (this!=selected && this.name != selected.name) { 
+                    //console.log("reserve clicked " +selected.name);
+                    //console.log("disabling " + $('input[name="'+ this.name +'"]').attr('name'));
+                    //if not the clicked one, disable it
+                    $('input[name="'+ this.name +'"]').attr('disabled','true'); 
+                }
+            });
+            
+        }
+        
+        
         function getBlock(input) {
             
             if ($(input).hasClass('blocka')) {return "A";}
