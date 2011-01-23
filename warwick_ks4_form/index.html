@@ -154,6 +154,29 @@ function MM_swapImage() { //v3.0
                 checkComplete("D");
             });
             
+            $('.btec').change(function(){
+                var btecs =0;
+                                
+                $('input.btec.first').each(function(){
+                    if ($(this).attr('checked')) {
+                        btecs++;   
+                    }
+                });
+
+                $('input.btec.reserve').each(function(){
+                    if ($(this).attr('checked')) {
+                        btecs++;   
+                    }
+                });
+            
+            if (btecs > 2) {
+                jAlert("You may only choose a maximum of 2 BTECs,\n"+
+                "either as first choice or as reserve.");
+                $('input.no[name="'+ this.name +'"]').attr('checked','true');
+            }
+            
+            });
+            
             
             //%%%%%% reset form when clicking the button
             
