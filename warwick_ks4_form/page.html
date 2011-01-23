@@ -155,6 +155,20 @@ function MM_swapImage() { //v3.0
             });
             
             
+            //%%%%%% reset form when clicking the button
+            
+            $('#clearbutton').click(function(){
+                $('.blocka.no').attr('checked', 'true');
+                $('.blockb.no').attr('checked', 'true');
+                $('.blockc.no').attr('checked', 'true');
+                $('.blockd.no').attr('checked', 'true');
+                $('input:disabled').removeAttr('disabled');
+                checkComplete("A");
+                checkComplete("B");
+                checkComplete("C");
+                checkComplete("D");
+                $('#hairandbeautydiploma').removeAttr('checked');
+            });
             
             
 			//if first is clicked in block A 
@@ -1241,7 +1255,10 @@ document.write('</td></table>')
 					<td colspan="4" align="center">Hair and Beauty Diploma <input type="checkbox" name="hbd" id="hairandbeautydiploma"></td>
 				</tr>
 			</table>
-		</form>
+         <p>   
+            <input id="clearbutton" type="button" name="FormReset" value="Clear all, start again!">
+         </p>
+        </form>
 
       
 
